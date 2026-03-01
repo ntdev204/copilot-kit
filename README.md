@@ -78,11 +78,11 @@ specialist agent, and self-validates its output against a risk engine.
 
 ## Usage
 
-| Command | Description |
-| ------- | ----------- |
-| `npx @ntdev204/copilot-kit init` | Scaffold `.github/` into the current project |
+| Command                            | Description                                        |
+| ---------------------------------- | -------------------------------------------------- |
+| `npx @ntdev204/copilot-kit init`   | Scaffold `.github/` into the current project       |
 | `npx @ntdev204/copilot-kit update` | Check for a newer version and upgrade if available |
-| `npx @ntdev204/copilot-kit status` | Show installation health and version info |
+| `npx @ntdev204/copilot-kit status` | Show installation health and version info          |
 
 ```bash
 # First-time setup

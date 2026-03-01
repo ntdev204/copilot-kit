@@ -137,8 +137,11 @@ export default function InstallationPage() {
           <h2 className="text-xl font-semibold">Existing .github/ directory</h2>
           <p className="text-sm text-muted-foreground">
             If a{" "}
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">.github/</code>{" "}
-            directory already exists, <code>init</code> prompts before overwriting:
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
+              .github/
+            </code>{" "}
+            directory already exists, <code>init</code> prompts before
+            overwriting:
           </p>
           <CodeBlock
             code={`?  Overwrite existing .github/? (y/N)`}
