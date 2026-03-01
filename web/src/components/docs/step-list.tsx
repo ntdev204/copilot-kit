@@ -25,7 +25,7 @@ export function Step({ title, children, className }: StepProps) {
     <div
       className={cn(
         "relative border-l-2 border-border pb-8 pl-8 [counter-increment:step] last:pb-0",
-        "before:absolute before:-left-[1.125rem] before:flex before:size-9 before:items-center before:justify-center",
+        "before:absolute before:-left-4.5 before:flex before:size-9 before:items-center before:justify-center",
         "before:rounded-full before:border-2 before:border-border before:bg-background",
         "before:font-mono before:text-sm before:font-bold before:text-foreground",
         "before:content-[counter(step,decimal)]",
