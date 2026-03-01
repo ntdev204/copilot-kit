@@ -9,7 +9,14 @@
 > Powered by the **Adaptive Governance Framework (AGF) v3.2** — a 5-layer AI governance system that turns GitHub Copilot into a structured, risk-aware coding partner.
 
 ```bash
+# Scaffold .github/ for the first time
 npx @ntdev204/copilot-kit init
+
+# Check for updates & upgrade .github/ if behind
+npx @ntdev204/copilot-kit update
+
+# Show installation health & version info
+npx @ntdev204/copilot-kit status
 ```
 
 ---
@@ -71,18 +78,37 @@ specialist agent, and self-validates its output against a risk engine.
 
 ## Usage
 
+| Command | Description |
+| ------- | ----------- |
+| `npx @ntdev204/copilot-kit init` | Scaffold `.github/` into the current project |
+| `npx @ntdev204/copilot-kit update` | Check for a newer version and upgrade if available |
+| `npx @ntdev204/copilot-kit status` | Show installation health and version info |
+
 ```bash
-# Inside any project directory:
+# First-time setup
 npx @ntdev204/copilot-kit init
+
+# Keep .github/ current (safe — asks before overwriting)
+npx @ntdev204/copilot-kit update
+
+# Inspect installation
+npx @ntdev204/copilot-kit status
 ```
 
-**Re-running on an existing project** — the CLI will ask before overwriting:
+**`init` on an existing project** — the CLI will ask before overwriting:
 
 ```
-⚠  .github/ already exists. Overwrite? (y/N):
+?  Overwrite existing .github/? (y/N)
 ```
 
-Enter `y` to pull the latest configuration, `N` to abort.
+**`update`** — compares your local SHA against the remote HEAD. If behind, shows the diff and prompts:
+
+```
+ℹ  Current : abc1234
+ℹ  Latest  : e339ca5  ← new version available
+
+?  Update .github/ to the latest version? (y/N)
+```
 
 ---
 
@@ -105,14 +131,30 @@ action:
 
 ## How it works
 
-The package is intentionally minimal — it ships only `bin/cli.js` (4.7 kB).  
+The package ships a small Node.js CLI split across focused modules under `src/`:
+
+```
+bin/cli.js          ← 22-line dispatch entry point
+src/
+  constants.js      ← shared constants (version read from package.json)
+  ui.js             ← ANSI colours, spinner, banner, box/section/log helpers
+  net.js            ← fetchTarball(), fetchJSON()
+  store.js          ← SHA read/write/fetch helpers
+  scaffold.js       ← shared downloadAndExtract() logic
+  commands/
+    init.js         ← copilot-kit init
+    update.js       ← copilot-kit update
+    status.js       ← copilot-kit status
+    help.js         ← usage / help screen
+```
+
 At `init` time it fetches the GitHub tarball from `ntdev204/copilot-kit@main`,
 gunzips it, and extracts only the `.github/` subtree into your project.
 
 This means:
 
 - The npm package stays tiny and rarely needs a new release
-- Running `init` again always pulls the **latest skills and rules** from `main`
+- `update` compares a locally stored SHA against the remote HEAD — no unnecessary re-downloads
 - No `.github/` content is ever bundled into the npm tarball
 
 ---

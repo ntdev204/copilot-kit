@@ -137,13 +137,19 @@ export default function InstallationPage() {
           <h2 className="text-xl font-semibold">Existing .github/ directory</h2>
           <p className="text-sm text-muted-foreground">
             If a{" "}
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
-              .github/
-            </code>{" "}
-            directory already exists, the CLI prompts before overwriting:
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">.github/</code>{" "}
+            directory already exists, <code>init</code> prompts before overwriting:
           </p>
           <CodeBlock
-            code={`⚠  .github/ already exists. Overwrite? (y/N)`}
+            code={`?  Overwrite existing .github/? (y/N)`}
+            language="bash"
+          />
+          <p className="text-sm text-muted-foreground">
+            Alternatively, use the <code>update</code> command to safely check
+            for a newer version and upgrade only if needed:
+          </p>
+          <CodeBlock
+            code={`npx @ntdev204/copilot-kit update`}
             language="bash"
           />
           <Callout variant="warning" title="Backup your customizations">
