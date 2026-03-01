@@ -1,0 +1,21 @@
+# Keep the published package minimal.
+# Only bin/, package.json, README.md, and LICENSE are shipped.
+# The .github/ folder lives on GitHub — it is downloaded at runtime by `init`.
+
+# Source/repo files
+.github/
+SECURITY.md
+.gitignore
+
+# Python scripts
+*.py
+*.pyc
+__pycache__/
+
+# Dev / editor artefacts
+.vscode/
+.idea/
+*.log
+package-lock.json
+*.lock
+node_modules/
