@@ -1,6 +1,6 @@
 # Github Copilot Instructions — Adaptive Governance Framework (AGF)
 
-> v3.2 · Risk-Activated Enforcement · 5.5-Layer Governance
+> v1.0 · Risk-Activated Enforcement · 5.5-Layer Governance
 > `Every request → Risk Engine → Risk Level (L0–L3) → Active Constraints + Strictness Mode → Response Format Contract`
 
 ---
@@ -282,4 +282,4 @@ Phase 5 · Performance      → bundle_analyzer.py, lighthouse_audit.py
 
 ---
 
-_Framework Version: 3.2 | AGF Response Format Contract + L2 Mode Refinement 2026-03-01_
+_Framework Version: 1.0 | AGF Response Format Contract + L2 Mode Refinement 2026-03-01_
