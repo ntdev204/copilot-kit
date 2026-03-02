@@ -1,6 +1,6 @@
 {
   "name": "@ntdev204/copilot-kit",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Scaffold a full GitHub Copilot configuration (.github/) into any project with one command.",
   "keywords": [
     "copilot",
@@ -37,5 +37,9 @@
   "homepage": "https://github.com/ntdev204/copilot-kit#readme",
   "bugs": {
     "url": "https://github.com/ntdev204/copilot-kit/issues"
+  },
+  "scripts": {
+    "release:npm": "npm publish --registry=https://registry.npmjs.org/ --access public",
+    "release:github": "npm publish --registry=https://npm.pkg.github.com/"
   }
 }
