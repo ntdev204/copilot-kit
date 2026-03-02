@@ -7,6 +7,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [1.2.5] — 2026-03-02
+
+### Fixed
+
+- `Invalid count value: -1` persisting after v1.2.4 — the `onentry` approach introduced in v1.2.4 was still flawed: `pax_global_header` is the first entry emitted before any real file, so its literal path `"pax_global_header"` was being captured as `rootDir`, causing `copyMerge()` to target a non-existent path and throw; replaced with a post-extraction `fs.readdirSync(tmpDir)` scan to find the actual root directory that was written to disk — verified clean against live GitHub tarball
+
+---
+
 ## [1.2.4] — 2026-03-02
 
 ### Fixed
