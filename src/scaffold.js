@@ -57,11 +57,26 @@ async function downloadAndExtract(
 
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "copilot-kit-"));
   try {
-    // Extract the full tarball into tmpDir, stripping the leading root dir.
-    // strip:1 is safe here because we are not filtering while stripping.
-    await pipeline(res, zlib.createGunzip(), tar.x({ cwd: tmpDir, strip: 1 }));
+    // Extract the full tarball into tmpDir WITHOUT strip, then detect the
+    // root directory name from the first real entry. This avoids the
+    // "Invalid count value: -1" crash that occurs when node-tar strip:1
+    // encounters pax_global_header or other depth-0 special entries.
+    let rootDir = "";
+    await pipeline(
+      res,
+      zlib.createGunzip(),
+      tar.x({
+        cwd: tmpDir,
+        onentry(entry) {
+          if (!rootDir) {
+            const first = entry.path.split("/").filter(Boolean)[0];
+            if (first) rootDir = first;
+          }
+        },
+      }),
+    );
 
-    const srcGithub = path.join(tmpDir, GITHUB_DIR);
+    const srcGithub = path.join(tmpDir, rootDir, GITHUB_DIR);
     const dstGithub = path.join(cwd, GITHUB_DIR);
     copyMerge(srcGithub, dstGithub, keepExisting);
   } catch (err) {

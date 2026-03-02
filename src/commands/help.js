@@ -29,6 +29,9 @@ function showHelp(unknownCmd) {
   console.log(
     `  ${paint(bWhite, "npx")} ${paint(bMagenta, "@ntdev204/copilot-kit")} ${paint(bCyan, "<command>")}`,
   );
+  console.log(
+    `  ${paint(bWhite, "copilot-kit")} ${paint(bCyan, "<command>")}  ${dim("(after global install)")}`,
+  );
 
   section("Commands", bCyan);
   const CW = 8;
@@ -40,7 +43,17 @@ function showHelp(unknownCmd) {
     `  ${paint(bYellow, pad("update"))}  ${dim("│")}  Check for updates & upgrade ${paint(bCyan, ".github/")} if needed`,
   );
   console.log(
-    `  ${paint(bMagenta, pad("status"))}  ${dim("│")}  Show installation health & version info`,
+    `  ${paint(bMagenta, pad("status"))}  ${dim("│")}  Show current version & check for updates`,
+  );
+
+  section("Flags", bCyan);
+  const FW = 10;
+  const fpad = (s) => s + " ".repeat(Math.max(0, FW - s.length));
+  console.log(
+    `  ${paint(bCyan, fpad("--version"))}  ${dim("│")}  Print the installed version and exit`,
+  );
+  console.log(
+    `  ${paint(bCyan, fpad("-v"))}  ${dim("│")}  Alias for --version`,
   );
 
   section("Examples", bYellow);
@@ -52,6 +65,9 @@ function showHelp(unknownCmd) {
   );
   console.log(
     `  ${dim("$")} ${paint(bWhite, "npx @ntdev204/copilot-kit")} ${paint(bMagenta, "status")}`,
+  );
+  console.log(
+    `  ${dim("$")} ${paint(bWhite, "copilot-kit")} ${paint(bCyan, "--version")}`,
   );
   console.log();
 }
