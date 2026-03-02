@@ -48,16 +48,16 @@ async function update() {
   // ── Version check ──────────────────────────────────────────────────────────
   section("Checking version", bYellow);
 
-  const localSha = readLocalSha(targetPath);
+  const localVersion = PKG_VERSION.replace(/^v/, "");
   const fmtVer = (v) => v || paint(bRed, "unknown");
 
   process.stdout.write(
     `  ${paint(bCyan, "ℹ")}  Fetching latest version from GitHub${paint(D, " …")}  `,
   );
 
-  let remoteSha = null;
+  let remoteVersion = null;
   try {
-    remoteSha = await fetchLatestSha();
+    remoteVersion = await fetchLatestVersion();
     process.stdout.write("\r  " + " ".repeat(50) + "\r");
   } catch {
     process.stdout.write("\r  " + " ".repeat(50) + "\r");
@@ -67,15 +67,15 @@ async function update() {
   }
 
   // Already up-to-date
-  if (localSha && remoteSha === localSha) {
-    ok(`Already up-to-date ${dim("·")} ${paint(bGreen, remoteSha)}`);
+  if (localVersion === remoteVersion) {
+    ok(`Already up-to-date ${dim("·")} ${paint(bGreen, "v" + remoteVersion)}`);
     console.log();
     console.log(
       box(
         [
           `${paint(bGreen, B + "  ✔  .github/ is already the latest version")}`,
           "",
-          `  ${dim("Version")} ${paint(bCyan, remoteSha)}  ${dim("ntdev204/copilot-kit")}`,
+          `  ${dim("Version")} ${paint(bCyan, "v" + remoteVersion)}  ${dim("ntdev204/copilot-kit")}`,
         ],
         bGreen,
       ),
@@ -85,9 +85,9 @@ async function update() {
   }
 
   // New version available — show diff & ask
-  info(`Current : ${paint(bYellow, fmtVer(localSha))}`);
+  info(`Current : ${paint(bYellow, fmtVer("v" + localVersion))}`);
   info(
-    `Latest  : ${paint(bGreen, fmtVer(remoteSha))}  ${paint(bGreen, "← new version available")}`,
+    `Latest  : ${paint(bGreen, fmtVer("v" + remoteVersion))}  ${paint(bGreen, "← new version available")}`,
   );
 
   const answer = await prompt(

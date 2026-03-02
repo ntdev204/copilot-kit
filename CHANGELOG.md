@@ -7,6 +7,27 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [1.2.3] — 2026-03-02
+
+### Fixed
+
+- `Invalid count value: -1` error thrown by node-tar v7 — root cause: `strip: 1` runs before `filter`, so the shallow root-directory entry in the tarball (`ntdev204-copilot-kit-<hash>/`) caused an invalid depth calculation before the filter could reject it
+- Stray `ntdev204-copilot-kit-<hash>/` folder being created in the user's working directory — same root cause as above
+- Merge mode (`init` on an existing `.github/`) still overwriting files — `keep` option in node-tar applies only within-archive, not to files already on disk
+
+### Changed
+
+- `src/scaffold.js` — extraction strategy replaced: tarball is now extracted in full to a temp directory (`os.tmpdir()`) using `strip: 1`; then a new `copyMerge()` helper copies only the `.github/` subtree into `cwd`, skipping existing files when `keepExisting = true`; temp directory is always cleaned up in `finally`
+- `src/store.js` — removed `readLocalSha`, `writeLocalSha`, `fetchLatestSha`; replaced with `fetchLatestVersion()` which hits the GitHub Releases API (`/releases/latest`) and returns `tag_name` as a plain semver string (leading `v` stripped)
+- `src/constants.js` — removed `SHA_FILE` and `COMMITS_URL` constants
+- `copilot-kit update` and `copilot-kit status` — version comparison now uses `PKG_VERSION` (from `package.json`) as the installed version against the remote release tag; displays `v1.x.x` instead of a truncated commit SHA
+
+### Removed
+
+- `.github/.copilot-kit-sha` file — no longer written or read; version tracking is fully derived from the installed npm package version
+
+---
+
 ## [1.2.0] — 2026-03-02
 
 ### Changed
@@ -84,6 +105,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+[1.2.3]: https://github.com/ntdev204/copilot-kit/releases/tag/v1.2.3
 [1.2.0]: https://github.com/ntdev204/copilot-kit/releases/tag/v1.2.0
 [1.1.0]: https://github.com/ntdev204/copilot-kit/releases/tag/v1.1.0
 [1.0.0]: https://github.com/ntdev204/copilot-kit/releases/tag/v1.0.0
