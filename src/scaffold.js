@@ -15,7 +15,11 @@ const { createSpinner } = require("./ui");
  * @param {string} cwd  - Directory to extract into
  * @param {string} msg  - Spinner message
  */
-async function downloadAndExtract(cwd, msg = "Fetching tarball from GitHub") {
+async function downloadAndExtract(
+  cwd,
+  msg = "Fetching tarball from GitHub",
+  keepExisting = false,
+) {
   const spinner = createSpinner(msg);
 
   let res;
@@ -34,6 +38,7 @@ async function downloadAndExtract(cwd, msg = "Fetching tarball from GitHub") {
       tar.x({
         cwd,
         strip: 1,
+        keep: keepExisting,
         filter: (entryPath) => {
           const second = entryPath.replace(/\\/g, "/").split("/")[1];
           return second === GITHUB_DIR;

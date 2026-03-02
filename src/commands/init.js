@@ -9,8 +9,6 @@ const {
   section,
   ok,
   info,
-  warn,
-  fail,
   paint,
   bGreen,
   bYellow,
@@ -18,12 +16,9 @@ const {
   bCyan,
   bWhite,
   B,
-  D,
   dim,
-  bold,
   box,
 } = require("../ui");
-const { prompt } = require("../prompt");
 const { downloadAndExtract } = require("../scaffold");
 const { fetchLatestSha, writeLocalSha } = require("../store");
 
@@ -35,19 +30,11 @@ async function init() {
 
   section("Preflight", bYellow);
 
-  if (fs.existsSync(targetPath)) {
-    warn(`${paint(bYellow, ".github/")} already exists in this directory.`);
-    const answer = await prompt(
-      `\n  ${paint(bYellow, "?")}  ${bold("Overwrite existing .github/?")} ${dim("(y/N)")}  `,
+  const keepExisting = fs.existsSync(targetPath);
+  if (keepExisting) {
+    info(
+      `${paint(bYellow, ".github/")} already exists — new files will be added, existing files kept.`,
     );
-    if (answer.trim().toLowerCase() !== "y") {
-      console.log();
-      fail("Aborted — no changes were made.");
-      console.log();
-      process.exit(0);
-    }
-    fs.rmSync(targetPath, { recursive: true, force: true });
-    ok(`Removed existing ${paint(bCyan, ".github/")}`);
   } else {
     ok(`Target directory is ${paint(bGreen, "clean")}`);
   }
@@ -56,7 +43,11 @@ async function init() {
   info(`Source:      ${paint(bBlue, "ntdev204/copilot-kit@main")}`);
 
   section("Downloading", bBlue);
-  const spinner = await downloadAndExtract(cwd, "Fetching tarball from GitHub");
+  const spinner = await downloadAndExtract(
+    cwd,
+    "Fetching tarball from GitHub",
+    keepExisting,
+  );
   spinner.succeed("Download & extraction complete");
 
   // Record SHA asynchronously (best-effort)
@@ -64,7 +55,7 @@ async function init() {
     .then((sha) => writeLocalSha(targetPath, sha))
     .catch(() => {});
 
-  section("What was created", bGreen);
+  section(keepExisting ? "What was merged" : "What was created", bGreen);
 
   const entries = [
     ["copilot-instructions.md", "Copilot picks this up automatically"],
@@ -84,7 +75,10 @@ async function init() {
   console.log(
     box(
       [
-        `${paint(bGreen, B + "  ✔  Scaffolded successfully!")}`,
+        `${paint(bGreen, B + (keepExisting ? "  ✔  Merged successfully!" : "  ✔  Scaffolded successfully!"))}`,
+        keepExisting
+          ? `  ${dim("Existing files were preserved — only missing files added")}`
+          : "",
         "",
         `  ${dim("Open VS Code — Copilot will load the config")}`,
         `  ${dim("instantly from")} ${paint(bCyan, ".github/copilot-instructions.md")}`,
