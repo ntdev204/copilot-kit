@@ -147,9 +147,12 @@ export default function HomePage() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-4xl px-6 py-24 text-center">
+      <section className="mx-auto max-w-4xl px-6 py-13 text-center">
         <div className="mb-6 flex justify-center">
-          <Badge variant="secondary" className="gap-1.5 px-3 py-1 text-xs">
+          <Badge
+            variant="outline"
+            className="gap-1.5 px-3 py-1 text-xs border-green-500 text-green-600 dark:text-green-400"
+          >
             <ZapIcon className="size-3" />
             AGF v1.0 · 45 Skills · Zero Config
           </Badge>

@@ -21,6 +21,8 @@ const sections = [
       "Install copilot-kit and run your first init in under 2 minutes.",
     href: "/docs/getting-started",
     cta: "Start here",
+    iconBg: "bg-amber-500/15",
+    iconColor: "text-amber-500",
   },
   {
     icon: BookOpenIcon,
@@ -29,6 +31,8 @@ const sections = [
       "Deep dives into AGF layers, risk levels, skills, and agent routing.",
     href: "/docs/guides",
     cta: "Explore guides",
+    iconBg: "bg-blue-500/15",
+    iconColor: "text-blue-500",
   },
   {
     icon: CommandIcon,
@@ -37,6 +41,8 @@ const sections = [
       "Complete reference for CLI commands, skills, rules, prompts, and agent modes.",
     href: "/docs/api-reference",
     cta: "View reference",
+    iconBg: "bg-violet-500/15",
+    iconColor: "text-violet-500",
   },
 ];
 
@@ -54,30 +60,42 @@ export default function DocsPage() {
 
       {/* Section cards */}
       <div className="grid gap-4 sm:grid-cols-3">
-        {sections.map(({ icon: Icon, title, description, href, cta }) => (
-          <Card
-            key={href}
-            className="group relative flex flex-col overflow-hidden transition-shadow hover:shadow-md"
-          >
-            <CardHeader className="flex-1 space-y-3 pb-4">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                <Icon className="size-5 text-primary" />
+        {sections.map(
+          ({
+            icon: Icon,
+            title,
+            description,
+            href,
+            cta,
+            iconBg,
+            iconColor,
+          }) => (
+            <Card
+              key={href}
+              className="group relative flex flex-col overflow-hidden transition-shadow hover:shadow-md"
+            >
+              <CardHeader className="flex-1 space-y-3 pb-4">
+                <div
+                  className={`flex size-10 items-center justify-center rounded-lg ${iconBg}`}
+                >
+                  <Icon className={`size-5 ${iconColor}`} />
+                </div>
+                <CardTitle className="text-base">{title}</CardTitle>
+                <CardDescription className="text-sm leading-relaxed">
+                  {description}
+                </CardDescription>
+              </CardHeader>
+              <div className="px-6 pb-6">
+                <Button variant="outline" size="sm" asChild className="gap-1.5">
+                  <Link href={href}>
+                    {cta}
+                    <ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </Button>
               </div>
-              <CardTitle className="text-base">{title}</CardTitle>
-              <CardDescription className="text-sm leading-relaxed">
-                {description}
-              </CardDescription>
-            </CardHeader>
-            <div className="px-6 pb-6">
-              <Button variant="outline" size="sm" asChild className="gap-1.5">
-                <Link href={href}>
-                  {cta}
-                  <ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                </Link>
-              </Button>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          ),
+        )}
       </div>
 
       {/* Quick links */}

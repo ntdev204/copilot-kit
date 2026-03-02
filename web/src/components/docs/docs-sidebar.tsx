@@ -57,8 +57,8 @@ export function DocsSidebar() {
             </span>
           </div>
           <Badge
-            variant="secondary"
-            className="ml-auto shrink-0 h-5 rounded px-1.5 text-[10px] font-medium"
+            variant="outline"
+            className="ml-auto shrink-0 h-5 rounded px-1.5 text-[10px] font-medium bg-green-500/5 text-green-600 border-green-500 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500"
           >
             v1.0
           </Badge>
