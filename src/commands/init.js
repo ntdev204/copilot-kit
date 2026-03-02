@@ -20,7 +20,6 @@ const {
   box,
 } = require("../ui");
 const { downloadAndExtract } = require("../scaffold");
-const { fetchLatestSha, writeLocalSha } = require("../store");
 
 async function init() {
   showBanner();
@@ -49,11 +48,6 @@ async function init() {
     keepExisting,
   );
   spinner.succeed("Download & extraction complete");
-
-  // Record SHA asynchronously (best-effort)
-  fetchLatestSha()
-    .then((sha) => writeLocalSha(targetPath, sha))
-    .catch(() => {});
 
   section(keepExisting ? "What was merged" : "What was created", bGreen);
 

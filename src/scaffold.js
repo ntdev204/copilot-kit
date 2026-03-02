@@ -1,6 +1,7 @@
 "use strict";
 
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const zlib = require("zlib");
 const tar = require("tar");
@@ -11,11 +12,32 @@ const { fetchTarball } = require("./net");
 const { createSpinner } = require("./ui");
 
 /**
- * Download the tarball from GitHub and extract only the .github/ directory
- * into `cwd`. Returns the spinner so the caller can call .succeed() / .fail().
+ * Recursively copy src → dst.
+ * In merge mode (keepExisting=true): recurse into directories but skip
+ * individual files that already exist on disk.
+ */
+function copyMerge(src, dst, keepExisting) {
+  fs.mkdirSync(dst, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const dstPath = path.join(dst, entry.name);
+    if (entry.isDirectory()) {
+      copyMerge(srcPath, dstPath, keepExisting);
+    } else {
+      if (keepExisting && fs.existsSync(dstPath)) continue;
+      fs.copyFileSync(srcPath, dstPath);
+    }
+  }
+}
+
+/**
+ * Download the tarball from GitHub, extract it to a temp directory, then
+ * copy only the .github/ subtree into `cwd` (with optional merge semantics).
+ * Returns the spinner so the caller can call .succeed() / .fail().
  *
- * @param {string} cwd  - Directory to extract into
- * @param {string} msg  - Spinner message
+ * @param {string}  cwd          - Directory to install into
+ * @param {string}  msg          - Spinner message
+ * @param {boolean} keepExisting - Merge mode: skip files already on disk
  */
 async function downloadAndExtract(
   cwd,
@@ -33,40 +55,21 @@ async function downloadAndExtract(
     process.exit(1);
   }
 
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "copilot-kit-"));
   try {
-    await pipeline(
-      res,
-      zlib.createGunzip(),
-      tar.x({
-        cwd,
-        filter: (entryPath) => {
-          // entryPath = "copilot-kit-HASH/.github/..." (pre-strip, pre-map)
-          const parts = entryPath
-            .replace(/\\/g, "/")
-            .split("/")
-            .filter(Boolean);
-          // parts[0] = tarball root dir, parts[1] = .github, ...
-          if (parts.length < 2 || parts[1] !== GITHUB_DIR) return false;
-          if (!keepExisting) return true;
-          // Merge mode: skip entries whose destination already exists on disk
-          const dest = path.join(cwd, ...parts.slice(1));
-          return !fs.existsSync(dest);
-        },
-        map: (header) => {
-          // Strip the leading tarball-root segment from every accepted entry
-          const parts = header.path
-            .replace(/\\/g, "/")
-            .split("/")
-            .filter(Boolean);
-          header.path = parts.slice(1).join("/");
-          return header;
-        },
-      }),
-    );
+    // Extract the full tarball into tmpDir, stripping the leading root dir.
+    // strip:1 is safe here because we are not filtering while stripping.
+    await pipeline(res, zlib.createGunzip(), tar.x({ cwd: tmpDir, strip: 1 }));
+
+    const srcGithub = path.join(tmpDir, GITHUB_DIR);
+    const dstGithub = path.join(cwd, GITHUB_DIR);
+    copyMerge(srcGithub, dstGithub, keepExisting);
   } catch (err) {
     spinner.fail(`Extraction failed: ${err.message}`);
     console.log();
     process.exit(1);
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 
   return spinner;

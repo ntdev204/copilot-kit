@@ -26,7 +26,8 @@ const {
 } = require("../ui");
 const { prompt } = require("../prompt");
 const { downloadAndExtract } = require("../scaffold");
-const { readLocalSha, writeLocalSha, fetchLatestSha } = require("../store");
+const { fetchLatestVersion } = require("../store");
+const { PKG_VERSION } = require("../constants");
 
 async function update() {
   showBanner();
@@ -48,10 +49,10 @@ async function update() {
   section("Checking version", bYellow);
 
   const localSha = readLocalSha(targetPath);
-  const shortSha = (s) => (s ? s.slice(0, 7) : paint(bRed, "unknown"));
+  const fmtVer = (v) => v || paint(bRed, "unknown");
 
   process.stdout.write(
-    `  ${paint(bCyan, "ℹ")}  Fetching latest SHA from GitHub${paint(D, " …")}  `,
+    `  ${paint(bCyan, "ℹ")}  Fetching latest version from GitHub${paint(D, " …")}  `,
   );
 
   let remoteSha = null;
@@ -67,16 +68,14 @@ async function update() {
 
   // Already up-to-date
   if (localSha && remoteSha === localSha) {
-    ok(
-      `Already up-to-date ${dim("·")} SHA ${paint(bGreen, shortSha(remoteSha))}`,
-    );
+    ok(`Already up-to-date ${dim("·")} ${paint(bGreen, remoteSha)}`);
     console.log();
     console.log(
       box(
         [
           `${paint(bGreen, B + "  ✔  .github/ is already the latest version")}`,
           "",
-          `  ${dim("SHA")} ${paint(bCyan, remoteSha.slice(0, 7))}  ${dim("ntdev204/copilot-kit@main")}`,
+          `  ${dim("Version")} ${paint(bCyan, remoteSha)}  ${dim("ntdev204/copilot-kit")}`,
         ],
         bGreen,
       ),
@@ -86,9 +85,9 @@ async function update() {
   }
 
   // New version available — show diff & ask
-  info(`Current : ${paint(bYellow, shortSha(localSha))}`);
+  info(`Current : ${paint(bYellow, fmtVer(localSha))}`);
   info(
-    `Latest  : ${paint(bGreen, shortSha(remoteSha))}  ${paint(bGreen, "← new version available")}`,
+    `Latest  : ${paint(bGreen, fmtVer(remoteSha))}  ${paint(bGreen, "← new version available")}`,
   );
 
   const answer = await prompt(
@@ -113,16 +112,15 @@ async function update() {
     "Fetching latest tarball from GitHub",
   );
   spinner.succeed("Download & extraction complete");
-  writeLocalSha(targetPath, remoteSha);
 
   console.log();
   console.log(
     box(
       [
-        `${paint(bGreen, B + "  ✔  .github/ updated successfully!")}`,
+        `${paint(bGreen, B + "  \u2714  .github/ updated successfully!")}`,
         "",
-        `  ${dim("From")} ${paint(bYellow, shortSha(localSha))}  ${dim("→")}  ${paint(bGreen, shortSha(remoteSha))}`,
-        `  ${dim("Source: ntdev204/copilot-kit@main")}`,
+        `  ${dim("From")} ${paint(bYellow, "v" + localVersion)}  ${dim("\u2192")}  ${paint(bGreen, "v" + remoteVersion)}`,
+        `  ${dim("Source: ntdev204/copilot-kit")}`,
       ],
       bGreen,
     ),

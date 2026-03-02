@@ -24,7 +24,8 @@ const {
   dim,
   box,
 } = require("../ui");
-const { readLocalSha, fetchLatestSha } = require("../store");
+const { fetchLatestVersion } = require("../store");
+const { PKG_VERSION } = require("../constants");
 
 async function status() {
   showBanner();
@@ -79,22 +80,20 @@ async function status() {
   // ── Version ────────────────────────────────────────────────────────────────
   section("Version", bMagenta);
 
-  const localSha = readLocalSha(targetPath);
-  info(
-    `Local SHA  : ${localSha ? paint(bYellow, localSha.slice(0, 7)) : paint(bRed, "unknown")}`,
-  );
+  const localVersion = PKG_VERSION.replace(/^v/, "");
+  info(`Installed  : ${paint(bYellow, "v" + localVersion)}`);
 
   process.stdout.write(
-    `  ${paint(bCyan, "ℹ")}  Fetching remote SHA${paint(D, " …")}  `,
+    `  ${paint(bCyan, "\u2139")}  Fetching latest version${paint(D, " \u2026")}  `,
   );
-  let remoteSha = null;
+  let remoteVersion = null;
   try {
-    remoteSha = await fetchLatestSha();
+    remoteVersion = await fetchLatestVersion();
     process.stdout.write("\r  " + " ".repeat(40) + "\r");
-    info(`Remote SHA : ${paint(bGreen, remoteSha.slice(0, 7))}`);
+    info(`Latest     : ${paint(bGreen, "v" + remoteVersion)}`);
   } catch {
     process.stdout.write("\r  " + " ".repeat(40) + "\r");
-    warn(`Remote SHA : ${paint(bYellow, "unreachable")}`);
+    warn(`Latest     : ${paint(bYellow, "unreachable")}`);
   }
 
   // ── Verdict ────────────────────────────────────────────────────────────────
@@ -110,7 +109,7 @@ async function status() {
         bRed,
       ),
     );
-  } else if (remoteSha && localSha && remoteSha !== localSha) {
+  } else if (remoteVersion && localVersion !== remoteVersion) {
     console.log(
       box(
         [
