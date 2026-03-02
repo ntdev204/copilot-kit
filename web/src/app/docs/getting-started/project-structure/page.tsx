@@ -18,7 +18,7 @@ const structure = [
   {
     path: ".github/copilot-instructions.md",
     type: "file",
-    desc: "AGF v3.2 core governance brain — the main instructions file Copilot reads",
+    desc: "AGF v1.0 core governance brain — the main instructions file Copilot reads",
   },
   {
     path: ".github/skills/",
@@ -142,7 +142,7 @@ export default function ProjectStructurePage() {
             <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
               .github/copilot-instructions.md
             </code>{" "}
-            on every request. This file contains the full AGF v3.2 framework.
+            on every request. This file contains the full AGF v1.0 framework.
             Skills in{" "}
             <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
               .github/skills/

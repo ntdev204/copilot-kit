@@ -92,7 +92,7 @@ export default function UnderstandingAGFPage() {
     <div>
       <DocHeader
         title="Understanding AGF"
-        description="A complete walkthrough of the Adaptive Governance Framework v3.2 — the 5-layer system powering copilot-kit."
+        description="A complete walkthrough of the Adaptive Governance Framework v1.0 — the 5-layer system powering copilot-kit."
         breadcrumbs={[
           { title: "Guides", href: "/docs/guides" },
           { title: "Understanding AGF" },
@@ -103,7 +103,7 @@ export default function UnderstandingAGFPage() {
         <section className="space-y-4">
           <h2 className="text-xl font-semibold">What is the AGF?</h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            The Adaptive Governance Framework (AGF) v3.2 is a risk-activated
+            The Adaptive Governance Framework (AGF) v1.0 is a risk-activated
             enforcement system embedded in{" "}
             <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
               .github/copilot-instructions.md
@@ -113,7 +113,7 @@ export default function UnderstandingAGFPage() {
             accordingly.
           </p>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            The AGF has <strong className="text-foreground">5.5 layers</strong>{" "}
+            The AGF has <strong className="text-foreground">5 layers</strong>{" "}
             (Layer 4.5 is the Response Format Contract). Each layer builds on
             the previous, creating a coherent system from safety rules to output
             schemas.
@@ -123,7 +123,7 @@ export default function UnderstandingAGFPage() {
         <Separator />
 
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold">The 5.5 Layers</h2>
+          <h2 className="text-xl font-semibold">The 5 Layers</h2>
           <div className="space-y-4">
             {layers.map((layer) => (
               <div key={layer.n} className="rounded-lg border p-5 space-y-3">

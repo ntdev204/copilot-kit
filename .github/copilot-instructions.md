@@ -1,6 +1,6 @@
 # Github Copilot Instructions — Adaptive Governance Framework (AGF)
 
-> v1.0 · Risk-Activated Enforcement · 5.5-Layer Governance
+> v1.0 · Risk-Activated Enforcement · 5-Layer Governance
 > `Every request → Risk Engine → Risk Level (L0–L3) → Active Constraints + Strictness Mode → Response Format Contract`
 
 ---

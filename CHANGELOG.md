@@ -88,7 +88,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Automatic HTTPS redirect-following (up to 5 hops) to handle GitHub API → CDN redirects
 - Clear success output listing all created directories after extraction
 - Usage help printed when the CLI is invoked with no arguments or an unknown command
-- `.github/copilot-instructions.md` — **Adaptive Governance Framework (AGF) v3.2** with 5-layer AI governance (Meta Principles → Risk Engine → Strictness Mode → Conflict Resolution → Validation Feedback Loop)
+- `.github/copilot-instructions.md` — **Adaptive Governance Framework (AGF) v1.0** with 5-layer AI governance (Meta Principles → Risk Engine → Strictness Mode → Conflict Resolution → Validation Feedback Loop)
 - 40+ domain skill files under `.github/skills/` (clean-code, frontend-design, api-patterns, systematic-debugging, ai-engineering, database-design, testing-patterns, and more)
 - 11 governance rule files under `.github/rules/` (identity, task classification, consulting/build/debug/optimize modes, technical standards, communication, checklist, special situations, conflict resolution)
 - 8 reusable prompt templates under `.github/prompts/` (fix-error, generate-tests, refactor, code-review, explain, optimize, document, new-skill)

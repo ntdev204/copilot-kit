@@ -6,7 +6,7 @@
 [![Node.js](https://img.shields.io/node/v/@ntdev204/copilot-kit)](package.json)
 
 > Scaffold a complete **GitHub Copilot configuration** into any project with one command.  
-> Powered by the **Adaptive Governance Framework (AGF) v3.2** — a 5-layer AI governance system that turns GitHub Copilot into a structured, risk-aware coding partner.
+> Powered by the **Adaptive Governance Framework (AGF) v1.0** — a 5-layer AI governance system that turns GitHub Copilot into a structured, risk-aware coding partner.
 
 ```bash
 # Scaffold .github/ for the first time
@@ -38,7 +38,7 @@ specialist agent, and self-validates its output against a risk engine.
 
 ```
 .github/
-├── copilot-instructions.md      ← AGF v3.2 — the brain of the whole system
+├── copilot-instructions.md      ← AGF v1.0 — the brain of the whole system
 ├── skills/                      ← 40+ domain skill files (loaded on-demand)
 │   ├── clean-code/
 │   ├── frontend-design/

@@ -110,7 +110,7 @@ export default function InstallationPage() {
                 {[
                   [
                     ".github/copilot-instructions.md",
-                    "AGF v3.2 — the core governance brain",
+                    "AGF v1.0 — the core governance brain",
                   ],
                   [".github/skills/", "45 domain skill files loaded on-demand"],
                   [".github/rules/", "11 governance rule files"],

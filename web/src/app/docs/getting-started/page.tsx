@@ -176,7 +176,7 @@ export default function IntroductionPage() {
             The Adaptive Governance Framework
           </h2>
           <p className="text-muted-foreground leading-relaxed">
-            The AGF v3.2 is the brain powering copilot-kit. It consists of 5
+            The AGF v1.0 is the brain powering copilot-kit. It consists of 5
             layers that operate silently on every Copilot request:
           </p>
           <div className="space-y-2">
