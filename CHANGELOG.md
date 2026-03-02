@@ -7,6 +7,22 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [1.2.0] — 2026-03-02
+
+### Changed
+
+- `copilot-kit init` no longer prompts to delete `.github/` when it already exists — the command now **merges** instead: existing files are preserved and only missing files are written
+- `downloadAndExtract()` in `src/scaffold.js` accepts a new `keepExisting` parameter (default `false`) and forwards it as `keep: keepExisting` to `tar.x`, relying on `node-tar`'s built-in skip-on-collision behaviour
+- Section heading switches from **"What was created"** to **"What was merged"** when an existing `.github/` is detected
+- Success box message switches from **"✔ Scaffolded successfully!"** to **"✔ Merged successfully!"** and adds a note `"Existing files were preserved — only missing files added"` in the merge path
+
+### Removed
+
+- Interactive overwrite prompt (`y/N`) from `copilot-kit init` — replaced by automatic merge behaviour
+- Unused imports `warn`, `fail`, `bold`, `D`, and `prompt` from `src/commands/init.js`
+
+---
+
 ## [1.1.0] — 2026-03-01
 
 ### Added
@@ -68,5 +84,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+[1.2.0]: https://github.com/ntdev204/copilot-kit/releases/tag/v1.2.0
 [1.1.0]: https://github.com/ntdev204/copilot-kit/releases/tag/v1.1.0
 [1.0.0]: https://github.com/ntdev204/copilot-kit/releases/tag/v1.0.0
