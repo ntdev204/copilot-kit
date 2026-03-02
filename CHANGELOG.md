@@ -7,6 +7,25 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [1.2.4] — 2026-03-02
+
+### Fixed
+
+- `Invalid count value: -1` re-surfacing in certain environments — previous fix used `strip: 1` on the temp-dir extraction which still crashes when the tarball contains `pax_global_header` or other depth-0 special entries; replaced with `strip`-free extraction using an `onentry` callback to detect the actual root directory name at runtime, then pointing `copyMerge()` at `tmpDir/<rootDir>/.github/`
+
+### Changed
+
+- `copilot-kit status` — simplified to show only the installed package version and a version-check result; removed installation health and component checks; if a newer release exists, the output box shows the exact `npx @ntdev204/copilot-kit update` command to run
+- Web copy: "Re-run init anytime" → "Run update anytime" in the Always Latest feature description
+
+### Added
+
+- `--version` / `-v` flag — prints the installed package version (`PKG_VERSION`) and exits; available after both `npx` invocation and global install (`copilot-kit --version`)
+- `help` output now includes a **Flags** section documenting `--version` and `-v`, and shows the `copilot-kit <command>` usage line for global installs
+- Web: per-card icon colors on the homepage feature grid (violet · blue · red · cyan · emerald · amber) and the docs landing page section cards (amber · blue · violet)
+
+---
+
 ## [1.2.3] — 2026-03-02
 
 ### Fixed
