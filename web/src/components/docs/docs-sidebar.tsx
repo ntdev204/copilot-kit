@@ -43,7 +43,7 @@ export function DocsSidebar() {
   return (
     <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border">
       {/* Brand header */}
-      <SidebarHeader className="border-b border-sidebar-border px-4 py-3.5">
+      <SidebarHeader className="justify-center border-b border-sidebar-border px-4 h-14">
         <Link href="/" className="flex items-center gap-2.5">
           <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-background">
             <PackageIcon className="size-3.5" />

@@ -44,7 +44,7 @@ export function SearchDialog() {
         <SearchIcon className="size-3.5 shrink-0" />
         <span className="hidden sm:inline-flex">Search...</span>
         <kbd className="ml-auto hidden rounded border bg-background/80 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground/70 sm:inline-flex">
-          ⌘K
+          Ctrl + K
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
