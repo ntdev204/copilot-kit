@@ -29,36 +29,48 @@ const features = [
     title: "Adaptive Governance Framework",
     description:
       "5-layer system that scores every request for risk (L0–L3) and adapts response format, strictness, and validation accordingly.",
+    iconBg: "bg-violet-500/15",
+    iconColor: "text-violet-500",
   },
   {
     icon: BrainCircuitIcon,
     title: "45 Domain Skills",
     description:
       "From frontend design to robotics, Rust to AI/ML — specialist knowledge loaded on-demand based on your request context.",
+    iconBg: "bg-blue-500/15",
+    iconColor: "text-blue-500",
   },
   {
     icon: ShieldCheckIcon,
     title: "Risk Engine",
     description:
       "Silent per-request scoring on 4 axes: blast radius, reversibility, security surface, and ambiguity. Auto-elevates security-critical requests.",
+    iconBg: "bg-red-500/15",
+    iconColor: "text-red-500",
   },
   {
     icon: RouteIcon,
     title: "Intelligent Routing",
     description:
       "Automatically detects your request domain and routes to the right specialist agent — no extra syntax required.",
+    iconBg: "bg-cyan-500/15",
+    iconColor: "text-cyan-500",
   },
   {
     icon: PackageIcon,
     title: "Zero Config",
     description:
       "One command, no flags, no environment variables. Works with GitHub Copilot in VS Code out of the box.",
+    iconBg: "bg-emerald-500/15",
+    iconColor: "text-emerald-500",
   },
   {
     icon: ZapIcon,
     title: "Always Latest",
     description:
-      "Downloads fresh content from GitHub at runtime. Re-run init anytime to get the newest skills and rules.",
+      "Downloads fresh content from GitHub at runtime. Run update anytime to get the newest skills and rules.",
+    iconBg: "bg-amber-500/15",
+    iconColor: "text-amber-500",
   },
 ];
 
@@ -248,19 +260,23 @@ export default function HomePage() {
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map(({ icon: Icon, title, description }) => (
-            <Card key={title} className="border-border/60">
-              <CardHeader className="space-y-2 pb-4">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
-                  <Icon className="size-4 text-primary" />
-                </div>
-                <CardTitle className="text-sm">{title}</CardTitle>
-                <CardDescription className="text-xs leading-relaxed">
-                  {description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
+          {features.map(
+            ({ icon: Icon, title, description, iconBg, iconColor }) => (
+              <Card key={title} className="border-border/60">
+                <CardHeader className="space-y-2 pb-4">
+                  <div
+                    className={`flex size-9 items-center justify-center rounded-lg ${iconBg}`}
+                  >
+                    <Icon className={`size-4 ${iconColor}`} />
+                  </div>
+                  <CardTitle className="text-sm">{title}</CardTitle>
+                  <CardDescription className="text-xs leading-relaxed">
+                    {description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ),
+          )}
         </div>
       </section>
 
