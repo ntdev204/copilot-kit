@@ -57,24 +57,18 @@ async function downloadAndExtract(
 
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "copilot-kit-"));
   try {
-    // Extract the full tarball into tmpDir WITHOUT strip, then detect the
-    // root directory name from the first real entry. This avoids the
-    // "Invalid count value: -1" crash that occurs when node-tar strip:1
-    // encounters pax_global_header or other depth-0 special entries.
-    let rootDir = "";
-    await pipeline(
-      res,
-      zlib.createGunzip(),
-      tar.x({
-        cwd: tmpDir,
-        onentry(entry) {
-          if (!rootDir) {
-            const first = entry.path.split("/").filter(Boolean)[0];
-            if (first) rootDir = first;
-          }
-        },
-      }),
-    );
+    // Extract everything into tmpDir with no strip/filter/onentry.
+    // pax_global_header and other special entries are handled transparently
+    // by node-tar when no strip option is set.
+    await pipeline(res, zlib.createGunzip(), tar.x({ cwd: tmpDir }));
+
+    // The tarball always extracts to a single root dir, e.g.
+    // ntdev204-copilot-kit-<hash>/. Find it by listing tmpDir.
+    const rootDir = fs
+      .readdirSync(tmpDir, { withFileTypes: true })
+      .find((e) => e.isDirectory())?.name;
+
+    if (!rootDir) throw new Error("Tarball contained no root directory.");
 
     const srcGithub = path.join(tmpDir, rootDir, GITHUB_DIR);
     const dstGithub = path.join(cwd, GITHUB_DIR);
