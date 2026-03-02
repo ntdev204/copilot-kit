@@ -1,5 +1,7 @@
 "use strict";
 
+const fs = require("fs");
+const path = require("path");
 const zlib = require("zlib");
 const tar = require("tar");
 const { pipeline } = require("stream/promises");
@@ -37,11 +39,27 @@ async function downloadAndExtract(
       zlib.createGunzip(),
       tar.x({
         cwd,
-        strip: 1,
-        keep: keepExisting,
         filter: (entryPath) => {
-          const second = entryPath.replace(/\\/g, "/").split("/")[1];
-          return second === GITHUB_DIR;
+          // entryPath = "copilot-kit-HASH/.github/..." (pre-strip, pre-map)
+          const parts = entryPath
+            .replace(/\\/g, "/")
+            .split("/")
+            .filter(Boolean);
+          // parts[0] = tarball root dir, parts[1] = .github, ...
+          if (parts.length < 2 || parts[1] !== GITHUB_DIR) return false;
+          if (!keepExisting) return true;
+          // Merge mode: skip entries whose destination already exists on disk
+          const dest = path.join(cwd, ...parts.slice(1));
+          return !fs.existsSync(dest);
+        },
+        map: (header) => {
+          // Strip the leading tarball-root segment from every accepted entry
+          const parts = header.path
+            .replace(/\\/g, "/")
+            .split("/")
+            .filter(Boolean);
+          header.path = parts.slice(1).join("/");
+          return header;
         },
       }),
     );
