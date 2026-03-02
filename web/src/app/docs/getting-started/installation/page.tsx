@@ -132,7 +132,7 @@ export default function InstallationPage() {
           </div>
         </section>
 
-        {/* Overwrite prompt */}
+        {/* Existing .github/ directory */}
         <section className="space-y-4">
           <h2 className="text-xl font-semibold">Existing .github/ directory</h2>
           <p className="text-sm text-muted-foreground">
@@ -140,25 +140,19 @@ export default function InstallationPage() {
             <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
               .github/
             </code>{" "}
-            directory already exists, <code>init</code> prompts before
-            overwriting:
+            directory already exists, <code>init</code> automatically{" "}
+            <strong>merges</strong> — new files are added and existing files are
+            left untouched:
           </p>
           <CodeBlock
-            code={`?  Overwrite existing .github/? (y/N)`}
+            code={`  ℹ  .github/ already exists — new files will be added, existing files kept.\n\n  ✔  Merged successfully!\n     Existing files were preserved — only missing files added`}
             language="bash"
           />
-          <p className="text-sm text-muted-foreground">
-            Alternatively, use the <code>update</code> command to safely check
-            for a newer version and upgrade only if needed:
-          </p>
-          <CodeBlock
-            code={`npx @ntdev204/copilot-kit update`}
-            language="bash"
-          />
-          <Callout variant="warning" title="Backup your customizations">
-            If you have custom <code>.github/</code> rules or workflows, back
-            them up before running init again. The tool overwrites the entire
-            directory.
+          <Callout variant="info" title="Your customizations are safe">
+            Existing files such as <code>workflows/</code>, custom rules, or
+            personal prompt overrides are never overwritten by <code>init</code>
+            . Use the <code>update</code> command to pull in the latest version
+            when you&apos;re ready.
           </Callout>
         </section>
 

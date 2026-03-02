@@ -6,6 +6,7 @@ import { PrevNextNav } from "@/components/docs/prev-next-nav";
 import { getPrevNext } from "@/lib/docs-navigation";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { VERSION } from "@/lib/version";
 
 export const metadata: Metadata = { title: "CLI Commands" };
 
@@ -37,7 +38,7 @@ export default function CliCommandsPage() {
               <p className="text-xs font-medium text-muted-foreground mb-1">
                 Version
               </p>
-              <p className="font-mono text-xs">1.1.0</p>
+              <p className="font-mono text-xs">{VERSION}</p>
             </div>
             <div>
               <p className="text-xs font-medium text-muted-foreground mb-1">
@@ -129,8 +130,9 @@ export default function CliCommandsPage() {
             <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
               .github/
             </code>{" "}
-            is behind the remote HEAD. If a new version is available, shows an
-            old → new SHA diff and asks for confirmation before overwriting.
+            is behind the latest release. If a new version is available, shows
+            the current → latest version and asks for confirmation before
+            overwriting.
           </p>
 
           <h3 className="text-base font-semibold">Syntax</h3>
@@ -145,16 +147,15 @@ export default function CliCommandsPage() {
               },
               {
                 event: "Already up-to-date",
-                action: "Prints SHA and exits without downloading",
+                action: "Prints current version and exits without downloading",
               },
               {
                 event: "New version available",
-                action: "Shows current SHA → latest SHA diff, prompts (y/N)",
+                action: "Shows current version → latest version, prompts (y/N)",
               },
               {
                 event: "User confirms",
-                action:
-                  "Wipes old .github/, downloads and extracts latest, writes new SHA",
+                action: "Wipes old .github/, downloads and extracts latest",
               },
               { event: "User declines", action: "Exits without changes" },
               {
@@ -175,13 +176,13 @@ export default function CliCommandsPage() {
           <h3 className="text-base font-semibold">Example output</h3>
           <CodeBlock
             language="bash"
-            code={`  ℹ  Current : abc1234\n  ℹ  Latest  : e339ca5  ← new version available\n\n  ?  Update .github/ to the latest version? (y/N)  y\n\n  ✔  .github/ updated successfully!\n     From abc1234  →  e339ca5`}
+            code={`  ℹ  Current : v1.2.2\n  ℹ  Latest  : v1.2.3  ← new version available\n\n  ?  Update .github/ to the latest version? (y/N)  y\n\n  ✔  .github/ updated successfully!\n     From v1.2.2  →  v1.2.3`}
           />
 
-          <Callout variant="warning" title="SHA tracking">
-            After every <code>init</code> or <code>update</code>, the CLI writes
-            a <code>.github/.copilot-kit-sha</code> file. This is how{" "}
-            <code>update</code> detects whether your copy is current.
+          <Callout variant="info" title="Version tracking">
+            <code>update</code> compares the installed npm package version
+            against the latest GitHub release tag. No extra files are written to
+            your project.
           </Callout>
         </section>
 
@@ -198,7 +199,7 @@ export default function CliCommandsPage() {
               .github/
             </code>
             , lists each expected component with item counts, and compares the
-            local SHA against the remote HEAD.
+            installed version against the latest GitHub release.
           </p>
 
           <h3 className="text-base font-semibold">Syntax</h3>
@@ -226,7 +227,7 @@ export default function CliCommandsPage() {
                   ],
                   [
                     "Version",
-                    "Local SHA (.copilot-kit-sha) vs. remote HEAD SHA from GitHub API",
+                    "Installed npm package version vs. latest GitHub release tag",
                   ],
                   [
                     "Verdict",
@@ -288,7 +289,7 @@ export default function CliCommandsPage() {
               "Writes only to .github/ relative to process.cwd() — no path traversal",
               "All downloads over HTTPS from api.github.com",
               "No credentials, secrets, or tokens read, stored, or transmitted",
-              "Uses tar@7.x (0 known vulnerabilities at 1.1.0 release)",
+              "Uses tar@7.x (0 known vulnerabilities at current release)",
             ].map((note, i) => (
               <div
                 key={i}

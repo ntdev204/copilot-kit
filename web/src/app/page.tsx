@@ -21,6 +21,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { VERSION } from "@/lib/version";
 
 const features = [
   {
@@ -363,7 +364,7 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row">
           <div className="flex items-center gap-2">
             <PackageIcon className="size-4" />
-            <span>copilot-kit v1.0.0 · MIT License</span>
+            <span>copilot-kit v{VERSION} · MIT License</span>
           </div>
           <div className="flex items-center gap-4">
             <Link
